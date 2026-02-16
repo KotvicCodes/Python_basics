@@ -1,0 +1,38 @@
+# Python byte-compiled/optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python workflows
+.venv/
+venv/
+/build/
+/dist/
+/public/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# caches
+.cache/
+.hypothesis/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# mypy
+.dmypy.json
+
+# backup files
+*.orig
+*.swp
+*.tmp
+
+# IDEs and text editors
+.idea/
+.vscode/
+.spyderproject
+.spyproject
+
+# macOS
+.DS_Store

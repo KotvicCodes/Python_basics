@@ -1,0 +1,5 @@
+# Configuration file for jupytext
+# https://github.com/mwouts/jupytext
+
+# Pair ipynb notebooks to py:percent text notebooks
+formats = "ipynb,py:percent"
