@@ -33,8 +33,6 @@ def equalizePivots(matrix, i):
             dividedMatrix.append(dividedRow)
         else:
             dividedMatrix.append(row)
-
-    print(f"divided: {dividedMatrix}")
     return dividedMatrix
 
 #* Sum rows
@@ -43,18 +41,14 @@ def sumRows(matrix, i):
     for j, row in enumerate(matrix):
         if j <= i:
             summedMatrix.append(row)
-            print(f"skipped row: {row}")
         else:
             summedRow = []
             for k, el in enumerate(row):
                 if row[i] != 0:
                     summedElement = matrix[i][k] - el
-                    print(f"matrix[i][k] {matrix[i][k]}")
-                    print(f"el {el}")
                     summedRow.append(summedElement)
                 else:
                     summedRow.append(el)
-            print(f"summedRow: {summedRow}")
             summedMatrix.append(summedRow)
     return summedMatrix
 
@@ -81,4 +75,34 @@ for i in range(dimensionOfA - 1):
     A = equalizePivots(A, i)
     A = sumRows(A, i)
     A = sortRows(A)
-    print(f"completed {A}")
+
+#! Jordan Elimination Of A
+def jordanEliminate(matrix):
+    for j, row in reversed(list(enumerate(matrix))):
+        #* Get 1 on the diagonal
+        backsidePivot = matrix[j][j]
+        dividedRow = []
+
+        if backsidePivot == 0:
+            print("Your matrix is uninvertible")
+            exit()
+        
+        for el in matrix[j]:
+            dividedRow.append(el / backsidePivot)
+
+        matrix[j] = dividedRow
+
+        #* Exit loop, when there is no line above
+        if j == 0:
+            break
+
+        #* Anullate this column
+        for k in range(j):
+            currentRow = matrix[k]
+            lastNonZero = matrix[k][j]
+            summedRow = []
+
+            for l, el in enumerate(currentRow):
+                summedRow.append(el - matrix[j][l] * lastNonZero)
+            matrix[k] = summedRow
+    return matrix
