@@ -4,30 +4,32 @@
 # output matrix A^(-1)
 
 #! Build Matrix
-A = [] # square matrix A
-B = [] # identity matrix B
+def buildMatrix():
+    A = [] # square matrix A
+    B = [] # identity matrix B
 
-dimensionOfA = int(input("Input the dimension of the square matrix A: "))
+    dimensionOfA = int(input("Input the dimension of the square matrix A: "))
 
-for i in range(dimensionOfA):
-    currentRowA = []
-    currentRowB = []
+    for i in range(dimensionOfA):
+        currentRowA = []
+        currentRowB = []
 
-    for j in range(dimensionOfA):
+        for j in range(dimensionOfA):
 
-        # build A based on user input
-        currentElement = float(input(f"Input element #{j+1} in row #{i+1}: "))
-        currentRowA.append(currentElement)
+            # build A based on user input
+            currentElement = float(input(f"Input element #{j+1} in row #{i+1}: "))
+            currentRowA.append(currentElement)
 
-        # build B based on kronecker delta
-        if i == j:
-            currentRowB.append(1)
-        else:
-            currentRowB.append(0)
+            # build B based on kronecker delta
+            if i == j:
+                currentRowB.append(1)
+            else:
+                currentRowB.append(0)
 
-    # append rows
-    A.append(currentRowA)
-    B.append(currentRowB)
+        # append rows
+        A.append(currentRowA)
+        B.append(currentRowB)
+    return A, B, dimensionOfA
 
 #! Gauss Elimination
 #* Equalize pivots
@@ -50,8 +52,6 @@ def equalizePivots(matrixA, matrixB, i):
                 else:
                     dividedRowA.append(elA)
                     dividedRowB.append(elB)
-                    print(f"dividedRowA: {dividedRowA}")
-                    print(f"dividedRowB: {dividedRowB}")
             dividedMatrixA.append(dividedRowA)
             dividedMatrixB.append(dividedRowB)
         else:
@@ -88,7 +88,7 @@ def sumRows(matrixA, matrixB, i):
     return summedMatrixA, summedMatrixB
 
 #* Sort rows by leading zeros
-def sortRows(matrixA, matrixB):
+def sortRows(matrixA, matrixB, dimensionOfA):
     sortedMatrixA = []
     sortedMatrixB = []
     placeholderMatrixA = []
@@ -116,12 +116,6 @@ def sortRows(matrixA, matrixB):
         placeholderMatrixA = []
         placeholderMatrixB = []
     return sortedMatrixA, sortedMatrixB
-
-#* Gauss elimination
-for i in range(dimensionOfA - 1):
-    A, B = equalizePivots(A, B, i)
-    A, B = sumRows(A, B, i)
-    A, B = sortRows(A, B)
 
 #! Jordan Elimination
 def jordanEliminate(matrixA, matrixB):
@@ -164,7 +158,17 @@ def jordanEliminate(matrixA, matrixB):
     return matrixA, matrixB
 
 #! Inverse Matrix Finder
-def inverseMatrix(A, B):
-    print(F"Your inverse matrix of A is A^(-1): {jordanEliminate(A, B)[1]}")
-    return None
-inverseMatrix(A, B)
+def inverseMatrix():
+    #* Build Matrix
+    A, B, dimOfA = buildMatrix()
+
+    #* Gauss elimination
+    for i in range(dimOfA - 1):
+        A, B = equalizePivots(A, B, i)
+        A, B = sumRows(A, B, i)
+        A, B = sortRows(A, B, dimOfA)
+
+    #* Jordan Elimination
+    return f"Your inverse matrix of A is A^(-1): {jordanEliminate(A, B)[1]}"
+
+print(inverseMatrix())
