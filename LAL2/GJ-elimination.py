@@ -162,6 +162,9 @@ def inverseMatrix():
     #* Build Matrix
     A, B, dimOfA = buildMatrix()
 
+    # save a copy of A before it gets mutated by elimination
+    originalA = [row[:] for row in A]
+
     #* Gauss elimination
     for i in range(dimOfA - 1):
         A, B = equalizePivots(A, B, i)
@@ -169,6 +172,20 @@ def inverseMatrix():
         A, B = sortRows(A, B, dimOfA)
 
     #* Jordan Elimination
-    return f"Your inverse matrix of A is A^(-1): {jordanEliminate(A, B)[1]}"
+    _, inverse = jordanEliminate(A, B)
+    return originalA, inverse
 
-print(inverseMatrix())
+#! Numpy Test
+import numpy as np
+
+def numpyTest(A, inverse):
+    expected = np.linalg.inv(np.array(A)).tolist()
+    
+    # use allclose to allow for floating point differences
+    assert np.allclose(inverse, expected), f"FAIL\ngot:      {inverse}\nexpected: {expected}"
+    print("PASS")
+
+#! Run
+A, inverse = inverseMatrix()
+print(f"Your inverse matrix of A is A^(-1): {inverse}")
+numpyTest(A, inverse)
