@@ -38,20 +38,26 @@ def equalizePivots(matrixA, matrixB, i):
     dividedMatrixB = []
 
     for k, row in enumerate(matrixA):
+        # only equalize rows at or below the current pivot
+        if k < i:
+            dividedMatrixA.append(row)
+            dividedMatrixB.append(matrixB[k])
+            continue
+
         dividedRowA = []
         dividedRowB = []
         divisor = row[i]
 
-        if divisor != 0 and not (matrixA[0] == row and i != 0):
+        if divisor != 0:
             for j, elA in enumerate(row):
                 elB = matrixB[k][j]
 
                 if j >= i:
                     dividedRowA.append(elA / divisor)
-                    dividedRowB.append(elB / divisor)
                 else:
                     dividedRowA.append(elA)
-                    dividedRowB.append(elB)
+                # always divide all elements of B
+                dividedRowB.append(elB / divisor)
             dividedMatrixA.append(dividedRowA)
             dividedMatrixB.append(dividedRowB)
         else:
@@ -128,7 +134,7 @@ def jordanEliminate(matrixA, matrixB):
         if backsidePivot == 0:
             print("Your matrix is uninvertible")
             exit()
-        
+
         for k, elA in enumerate(matrixA[j]):
             elB = matrixB[j][k]
             dividedRowA.append(elA / backsidePivot)
@@ -137,11 +143,11 @@ def jordanEliminate(matrixA, matrixB):
         matrixA[j] = dividedRowA
         matrixB[j] = dividedRowB
 
-        #* Exit loop, when there is no line above
+        #* Exit loop when there is no line above
         if j == 0:
             break
 
-        #* Anullate this column
+        #* Annullate this column
         for k in range(j):
             currentRowA = matrixA[k]
             currentRowB = matrixB[k]
@@ -159,7 +165,7 @@ def jordanEliminate(matrixA, matrixB):
 
 #! Inverse Matrix Finder
 def inverseMatrix():
-    #* Build Matrix
+    #* Build matrix
     A, B, dimOfA = buildMatrix()
 
     # save a copy of A before it gets mutated by elimination
@@ -171,7 +177,7 @@ def inverseMatrix():
         A, B = sumRows(A, B, i)
         A, B = sortRows(A, B, dimOfA)
 
-    #* Jordan Elimination
+    #* Jordan elimination
     _, inverse = jordanEliminate(A, B)
     return originalA, inverse
 
@@ -179,10 +185,10 @@ def inverseMatrix():
 import numpy as np
 
 def numpyTest(A, inverse):
-    expected = np.linalg.inv(np.array(A)).tolist()
-    
+    numpyResult = np.linalg.inv(np.array(A)).tolist()
+
     # use allclose to allow for floating point differences
-    assert np.allclose(inverse, expected), f"FAIL\ngot:      {inverse}\nexpected: {expected}"
+    assert np.allclose(inverse, numpyResult), f"FAIL\ngot:      {inverse}\nnumpyResult: {numpyResult}"
     print("PASS")
 
 #! Run
