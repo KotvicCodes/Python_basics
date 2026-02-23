@@ -38,6 +38,12 @@ def equalizePivots(matrixA, matrixB, i):
     dividedMatrixB = []
 
     for k, row in enumerate(matrixA):
+        # only equalize rows at or below the current pivot
+        if k < i:
+            dividedMatrixA.append(row)
+            dividedMatrixB.append(matrixB[k])
+            continue
+
         dividedRowA = []
         dividedRowB = []
         divisor = row[i]
@@ -48,10 +54,10 @@ def equalizePivots(matrixA, matrixB, i):
 
                 if j >= i:
                     dividedRowA.append(elA / divisor)
-                    dividedRowB.append(elB / divisor)
                 else:
                     dividedRowA.append(elA)
-                    dividedRowB.append(elB)
+                # always divide all elements of B
+                dividedRowB.append(elB / divisor)
             dividedMatrixA.append(dividedRowA)
             dividedMatrixB.append(dividedRowB)
         else:
