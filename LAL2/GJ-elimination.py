@@ -1,7 +1,14 @@
-# input matrixes A and B=I
-# totally eliminate A
-# apply the same operations to B
-# output matrix A^(-1)
+#
+
+#! Linear Algebra Explanation
+# If A can be transofmed into I (dentity matrix), then:
+# M * A = I; From here one can see M = A^(-1)
+
+# If we apply the same operations on B, then:
+# X = M * B = A^(-1) * B
+
+# If then we take B = I:
+# X = A^(-1) * I = A^(-1); Thus we have found the inverse of A
 
 #! Build Matrix
 def buildMatrix():
